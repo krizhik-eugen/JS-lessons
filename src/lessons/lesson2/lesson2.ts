@@ -110,12 +110,26 @@ console.log(counter2().increase())
 
 
 
-//@ts-ignore
-function superSum (num) {
+
+function superSum (num: number) {
     if (num <= 0) return 0;
     if (num === 1) return (n: number) => n;
-
+    let args: number[] = [];
+    function helper (...newArgs: number[]) {
+        args = [...args, ...newArgs]
+        if (args.length >= num) {
+        args.length = num
+            return args.reduce((acc, el) => acc + el)
+        } else {
+            return helper
+        }
+    }
+    return helper
 }
+
+// @ts-ignore
+
+console.log(superSum(3)(2,5)(3,9))
 
 // P.S. типизируйте только аргументы, а при вызове функции используйте @ts-ignore
 
