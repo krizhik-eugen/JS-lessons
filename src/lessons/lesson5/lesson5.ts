@@ -28,11 +28,15 @@ console.log('Lesson 5');
 type someObjType = {
     name: string;
     age: number;
+    greeting: Function
 }
 
-let someObj:someObjType = {
+let someObj: someObjType = {
     name: 'Eugene',
-    age: 32
+    age: 32,
+    greeting() {
+        return `My name is ${this.name}. I am ${this.age}`
+    }
 }
 
 // Task 02
@@ -44,18 +48,105 @@ let someObj:someObjType = {
 // rest current count - устанавливает значение счетчика равным 0
 // все методы должны ссылаться на сам объект
 
+/*
+let counter = {
+    count: 0,
+    getCurrentCount() {
+        return this.count
+    },
+    increment() {
+        this.count++
+    },
+    decrement() {
+        this.count--
+    },
+    setCurrentCount(c: number) {
+        this.count = c
+    },
+    restCurrentCount() {
+        this.count = 0
+    }
+}
+console.log(counter.getCurrentCount())
+console.log(counter.increment())
+console.log(counter.increment())
+console.log(counter.increment())
+console.log(counter.increment())
+console.log(counter.getCurrentCount())
+console.log(counter.decrement())
+console.log(counter.getCurrentCount())
+console.log(counter.restCurrentCount())
+console.log(counter.getCurrentCount())
+console.log(counter.setCurrentCount(50))
+console.log(counter.getCurrentCount())
+console.log(counter.restCurrentCount())
+console.log(counter.getCurrentCount())
+*/
+
+
 // Task 03
 // переделайте код из Task 02, что бы сработал следующий код:
 // counter.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount() // 12
+/*
+
+let counter = {
+    count: 0,
+    getCurrentCount() {
+        return this.count
+    },
+    increment() {
+        this.count++
+        return this
+    },
+    decrement() {
+        this.count--
+        return this
+    },
+    setCurrentCount(c: number) {
+        this.count = c
+        return this
+    },
+    restCurrentCount() {
+        this.count = 0
+        return this
+    }
+}
+
+console.log(counter.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount())
+*/
+
 
 // Task 04
 // Написать функцию конструктор myFirstConstructorFunc которая принимает 2 параметра name и age и возвращает объект
 // у которого будут эти свойства и метод greeting из Task 01
+//@ts-ignore
+/*function MyFirstConstructorFunc (name: string, age: number) {
+    //@ts-ignore
+    this.name = name;
+    //@ts-ignore
+    this.age = age;
+    //@ts-ignore
+    this.greeting = function () {
+        return `My name is ${this.name}. I am ${this.age}`
+    }
+}
+//@ts-ignore
+let user = new MyFirstConstructorFunc('Eugen', 36)
+console.log(user)
+console.log(user.greeting())
+console.log(user.name)*/
 
 // Task 05 есть 2 объекта One и Two. С помощью bind и метода sayHello заставьте поздороваться объект One
 
 let One = {name: 'One'};
-let Two = {name: 'Two', sayHello: function() {console.log(`Hello, my name is ${this.name}`)}};
+let Two = {
+    name: 'Two',
+    sayHello: function () {
+        console.log(`Hello, my name is ${this.name}`)
+    }
+};
+
+// console.log(Two.sayHello.bind(One)())
 
 // Task 06
 // создайте объект helperObj у которого есть следующие методы:
@@ -64,19 +155,90 @@ let Two = {name: 'Two', sayHello: function() {console.log(`Hello, my name is ${t
 // greeting - используется функция sayHello из Task 05
 // можно использовать @ts-ignore
 
+let helperObj = {
+    //@ts-ignore
+    changeName(name) {
+        //@ts-ignore
+        this.name = name
+    },
+    //@ts-ignore
+    setAge(age) {
+        //@ts-ignore
+        this.age = age
+    },
+    greeting() {
+        //@ts-ignore
+        console.log(`Hello, my name is ${this.name}`)
+    }
+}
+/*
+console.log(helperObj);
+console.log(helperObj.changeName('Natasha'))
+console.log(helperObj.greeting())
+console.log(helperObj.setAge(34))
+console.log(helperObj)*/
+
 // Bind
 // 1) Дана функция sumTwoNumbers, реализовать функцию bindNumber которая принимает функцию sumTwoNumbers и число, и
 // возвращает другую функцию, которое также принимает число и возвращает сумму этих чисел. Замыкание использовать нельзя
-function sumTwoNumbers(a:number,b:number):number {return a + b};
+/*function sumTwoNumbers(a: number, b: number): number {
+    return a + b
+};
+
+function bindNumber(func: any, num: number) {
+    //@ts-ignore
+    const func2 = func.bind(this, num)
+    return function(num2: number) {
+        return func2(num2)
+    }
+}
+
+console.log((bindNumber(sumTwoNumbers, 4)(5)))*/
 
 // 2) Напишите функцию которая принимает первым аргументом объект One, а вторым helperObj. Данная функция
 // возвращает другую функцию которая принимает строку в качестве аргумента и устанавливает ее свойству name объекта One
-// 3) Одной строкой установить с помощью helperObj объекту Two поле age в значение 30
+
+/*function test2(obj: Object, helperObj: Object) {
+    return function (str: string) {
+        //@ts-ignore
+        helperObj.changeName.bind(obj)(str)
+    }
+}
+
+test2(One, helperObj)('first')
+console.log(One.name)*/
+
+// 3) Одной строкой установить с пTомощью helperObj объекту Two поле age в значение 30
+/*helperObj.setAge.bind(Two)(30)
+//@ts-ignore
+console.log(Two.age)*/
+
 // 4) Создать метод hi у объекта One, который всегда вызывает метод greeting объекта helperObj от имени Two
+
+/*//@ts-ignore
+One.hi = helperObj.greeting.bind(Two)
+//@ts-ignore
+console.log(One.hi())*/
 
 // Реализовать задачи 2-4 из Bind с помощью Call
 
+/*function test2_2(obj: Object, helperObj: Object) {
+    return function (str: string) {
+        //@ts-ignore
+        helperObj.changeName.call(obj, str)
+    }
+}
 
+test2_2(One, helperObj)('first one')
+console.log(One.name)*/
+/*
+helperObj.setAge.call(Two, 31)
+console.log(Two)*/
 
+//@ts-ignore
+One.hi = helperObj.greeting.call(Two)
+//@ts-ignore
+console.log(One.hi)
 // just a plug
-export default () => {};
+export default () => {
+};
